@@ -8,7 +8,7 @@ const TopComponent = ({title, subtitle, hasMenu, hasImage, hasArrowBack, hasBubb
 
         <TopMenuComponent hasMenu={hasMenu} hasArrowBack={hasArrowBack} hasImage={hasImage} />
         
-        <TypographyComponent variant="h1" component="h1" gutterBotton={true} sx={{
+        <TypographyComponent align="center" variant="h1" component="h1" gutterBotton={true} sx={{
         fontSize: "3rem"
     }}>
         {title}
@@ -38,8 +38,7 @@ const TopComponent = ({title, subtitle, hasMenu, hasImage, hasArrowBack, hasBubb
             borderRadius: "100%",
             zIndex: "-1"
     }}></div>
-    </>
-        
+    </>        
     :
     null
     }

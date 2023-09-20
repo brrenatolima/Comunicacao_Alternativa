@@ -5,22 +5,29 @@ import { Suspense, useEffect, useState } from 'react';
 import {Loading } from './components'
 import routes from './routes'
 
+import { initializeApp } from "firebase/app"
+import { getAnalytics } from "firebase/analytics"
+
 const routesWithoutMenu = ['/profile', '/task', '/login', '/register', '/recovery-password'];
 const logoutRoutes = ['/login', '/register', '/recovery-password'];
-
+ 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: "pwa001-d9892.firebaseapp.com",
-  projectId: "pwa001-d9892",
-  storageBucket: "pwa001-d9892.appspot.com",
-  messagingSenderId: "154497386609",
-  appId: "1:154497386609:web:9ec61334f392f063d2f3d0"
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
 function App() {
   
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
   console.log(currentPath);
+
+  const firebaseApp = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(firebaseApp);
 
   return <Router>
     <Suspense fallback={<Loading />}>

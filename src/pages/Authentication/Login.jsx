@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { AuthTopComponent, BoxComponent, ButtonComponent, StackComponent, TextFieldComponent } from "../../components";
-import { login, verifyLogin } from "../../utils/auth";
+import { login, resendEmail, verifyLogin } from "../../utils/auth";
 import { Link, useNavigate } from "react-router-dom";
 import LoginIcon from '@mui/icons-material/Login'
 import { InputAdornment } from "@mui/material";
 import { AccountCircle, LockOutlined } from "@mui/icons-material";
-const Login = ({setCurrentPath, loggoutRoutes}) => {
+
+const Login = ({setCurrentPath, loggoutRoutes, firebaseApp}) => {
  
     const navigate = useNavigate();
+    const [showResendEmail, setShowResendEmail] = useState(false);
 
     useEffect(() => {
         setCurrentPath(window.location.pathname);
@@ -15,11 +17,15 @@ const Login = ({setCurrentPath, loggoutRoutes}) => {
     }, [])
 
     const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
+    const [password, setPassword] = useState("");
     
-    function entrarNoApp() {
-        login({email, senha}, navigate);
-        console.log("estou entrando no APP...");
+    async function entrarNoApp() {
+        await login(firebaseApp, {email, password}, navigate, setShowResendEmail);
+        //console.log("estou entrando no APP...");
+    } 
+
+    async function _resendEmail() {
+        await resendEmail(firebaseApp, {email, password}, setShowResendEmail);
     }
     
     return <>
@@ -39,12 +45,34 @@ const Login = ({setCurrentPath, loggoutRoutes}) => {
                 startAdornment: (
                     <InputAdornment position="start"><LockOutlined/></InputAdornment>
                 )
-            }} variant="filled" fullWidth={true} type="password" label={"Senha"} value={senha} onChange={function (e) { setSenha(e.target.value); }} />            
+            }} variant="filled" fullWidth={true} type="password" label={"Senha"} value={password} onChange={function (e) { setPassword(e.target.value); }} />            
         </BoxComponent>
 
         <BoxComponent component="div" sx={{ mt: 3, mb: 3, pr: 4, pl: 4 }} noValidate={true} autoComplete={"off"}>
-            <ButtonComponent startIcon={<LoginIcon sx={{color: '#fff'}} />} fullWidth={true} label="Entrar" onClick={entrarNoApp} />
+            <ButtonComponent  endIcon={<LoginIcon sx={{color: '#fff'}} />} fullWidth={true} label="Entrar" onClick={entrarNoApp} />
         </BoxComponent>
+
+        <BoxComponent component="div" sx={{ mt: 0, mb:0, pl: 4, pr: 4 }} noValidate={true} autoComplete={"off"} >
+            <StackComponent sx={{mt: 0, mb: 0}} alignItems={'end'}>
+                <Link style={{
+                    color: '#333',
+                    textDecoration: 'none',
+                    fontWeight: '200 !important',
+                    fontSize: 14
+                }} to="/recovery-password">Esqueceu a senha?</Link>
+            </StackComponent>
+        </BoxComponent>
+
+        <hr />
+
+        {
+            showResendEmail ?
+            <BoxComponent component="div" sx= {{mt: 3, mb:3, pl: 4, pr: 4}} noValidate={true} label="Reenviar e-mail" autoComplete={"off"} >
+                <ButtonComponent startIcon={<LoginIcon sx={{color: '#fff'}}/>} fullWidth={true} label="Reenviar e-mail" onClick={_resendEmail}/>
+            </BoxComponent>
+            :
+            null
+        }
 
         
         <StackComponent sx={{mt: 4, mb: 4}} alignItems={'center'}>

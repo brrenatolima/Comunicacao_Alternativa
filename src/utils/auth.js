@@ -1,4 +1,5 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
+import { DataModel } from "../data/datamodel";
 
 const userIsLoggedIn = () => {
     const user = window.localStorage.getItem('user');
@@ -79,6 +80,9 @@ const register = async (firebaseApp, data, navigate) => {
         const auth = getAuth(firebaseApp);
         const response = await createUserWithEmailAndPassword(auth, data.email, data.password)
         await confirmAccount(response.user);
+
+        const {email, displayName, emailVerified, photoURL, uid} = response.user;
+        await saveUserInDatabase(firebaseApp, {email, displayName, emailVerified, photoURL, uid});
         alert("Usuário cadatrado com sucesso. Verifique sua caixa de mensagem.")
         navigate('/login');
     }catch(e){
@@ -97,6 +101,11 @@ const register = async (firebaseApp, data, navigate) => {
 const logout = async (firebaseApp, navigate) => {
     window.localStorage.clear();
     navigate('/login');
+}
+
+const saveUserInDatabase = async (firebaseApp, user) => {
+    const dataModel = new DataModel('user', firebaseApp);
+    dataModel.create(user);
 }
 
 export {

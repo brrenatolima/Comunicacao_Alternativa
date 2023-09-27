@@ -36,7 +36,7 @@ function App() {
       <Routes>
       {
         routes.map((route, idx) => (
-          <Route key={`${idx}_rotas`} exact path={route.path} element={<route.element setCurrentPath={setCurrentPath} loggoutRoutes={logoutRoutes}/>}/>
+          <Route key={`${idx}_rotas`} exact path={route.path} element={<route.element firebaseApp={firebaseApp} setCurrentPath={setCurrentPath} loggoutRoutes={logoutRoutes}/>}/>
         ))
       }
     </Routes>

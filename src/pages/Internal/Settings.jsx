@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { logout, verifyLogin } from "../../utils/auth";
+import { logoutApp, verifyLogin } from "../../utils/auth";
 import { ButtonComponent, TopComponent } from "../../components";
 
-const Settings = ({setCurrentPath, loggoutRoutes}) => {
+const Settings = ({setCurrentPath, loggoutRoutes, firebaseApp}) => {
     const navigate = useNavigate();
     useEffect(() => {
         setCurrentPath(window.location.pathname);
@@ -13,7 +13,7 @@ const Settings = ({setCurrentPath, loggoutRoutes}) => {
     return <> 
     <TopComponent title={`Configurações`} subtitle={'Configurações do App'} />
     
-    <ButtonComponent label="Sair" onClick={ () => logout(navigate)} />
+    <ButtonComponent label="Sair" onClick={ () => logoutApp(firebaseApp, navigate)} />
     </>;
 }
 

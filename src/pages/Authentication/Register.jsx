@@ -7,6 +7,8 @@ import { InputAdornment } from "@mui/material";
 // import { AccountCircleOutlined, LockOutlined } from "@material-ui/icons";
 
 const Register = ({ setCurrentPath, loggoutRoutes, firebaseApp }) => {
+
+    console.log("entrou na página de registro");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -76,7 +78,7 @@ const Register = ({ setCurrentPath, loggoutRoutes, firebaseApp }) => {
                     textDecoration: 'none',
                     fontWeight: '200 !important',
                     fontSize: 16
-                }} to="/login">Entrar-me</Link>
+                }} to="/login">Entrar</Link>
             </StackComponent>
     </>
 }

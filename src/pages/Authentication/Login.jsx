@@ -7,6 +7,8 @@ import { InputAdornment } from "@mui/material";
 import { AccountCircle, LockOutlined } from "@mui/icons-material";
 
 const Login = ({setCurrentPath, loggoutRoutes, firebaseApp}) => {
+
+    console.log("entrou na página login");
  
     const navigate = useNavigate();
     const [showResendEmail, setShowResendEmail] = useState(false);

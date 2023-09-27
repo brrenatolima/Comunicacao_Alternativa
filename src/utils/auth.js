@@ -1,4 +1,4 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signOut } from "firebase/auth";
 import { DataModel } from "../data/datamodel";
 
 const userIsLoggedIn = () => {
@@ -32,7 +32,7 @@ const sendPasswordReset = async (firebaseApp, email, navigate) => {
     }
 }
 
-const saveLogin = (data) => {
+const saveLoginLocal = (data) => {
     window.localStorage.setItem('user', JSON.stringify(data));
 }
 
@@ -43,7 +43,7 @@ const login = async (firebaseApp, data, navigate, setShowResendEmail) => {
         const {email, displayName, emailVerified, photoURL, uid, accessToken} = response.user;
 
         if(emailVerified){
-            saveLogin({email, displayName, photoURL, uid, accessToken});
+            saveLoginLocal({email, displayName, photoURL, uid, accessToken});
             navigate('/');
             setShowResendEmail(false)
         }else{
@@ -51,7 +51,7 @@ const login = async (firebaseApp, data, navigate, setShowResendEmail) => {
             setShowResendEmail(true)
         }
     }catch(e){
-        if(e.toString().indexOf('auth/invalid-email') > -1){
+        if(e.toString().indexOf('auth/invalid-email') > -1 || e.toString().indexOf('auth/invalid-login-credentials') > -1){
             alert('Dados de usuário inválidos.')
         }else{
             alert(e.toString())
@@ -80,6 +80,7 @@ const register = async (firebaseApp, data, navigate) => {
         const auth = getAuth(firebaseApp);
         const response = await createUserWithEmailAndPassword(auth, data.email, data.password)
         await confirmAccount(response.user);
+        
 
         const {email, displayName, emailVerified, photoURL, uid} = response.user;
         await saveUserInDatabase(firebaseApp, {email, displayName, emailVerified, photoURL, uid});
@@ -98,8 +99,9 @@ const register = async (firebaseApp, data, navigate) => {
     }
 }
 
-const logout = async (firebaseApp, navigate) => {
+const logoutApp = async (firebaseApp, navigate) => {
     window.localStorage.clear();
+    // signOut(firebaseApp);
     navigate('/login');
 }
 
@@ -111,7 +113,7 @@ const saveUserInDatabase = async (firebaseApp, user) => {
 export {
     verifyLogin,
     login,
-    logout,
+    logoutApp,
     resendEmail,
     register,
     sendPasswordReset

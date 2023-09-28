@@ -16,13 +16,13 @@ const Register = ({ setCurrentPath, loggoutRoutes, firebaseApp }) => {
         verifyLogin(loggoutRoutes, window.location.pathname, navigate, firebaseApp)
     }, [])
 
-    const [email, setEmail] = useState("tiago");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     async function cadastrarNoApp(){
         await register(firebaseApp, {email, password}, navigate)
     }
-
+    
     return <>
             <AuthTopComponent title_page={'Cadastro'} subtitle_page={'Cadastre-se no app...'}/>
             <BoxComponent

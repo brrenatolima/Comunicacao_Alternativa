@@ -14,7 +14,8 @@ const ButtonComponent = ({ label, style, uppercase, variant, ...rest }) => {
 ButtonComponent.defaultProps = {
     style: {},
     variant: "contained",
-    uppercase: true
+    uppercase: true,
+    label: ""
 }
 
 export default ButtonComponent;

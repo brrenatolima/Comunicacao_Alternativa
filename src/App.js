@@ -7,6 +7,7 @@ import routes from './routes'
 
 import { initializeApp } from "firebase/app"
 import { getAnalytics } from "firebase/analytics"
+import { SvgIcon } from '@mui/material';
 
 const routesWithoutMenu = ['/profile', '/task', '/login', '/register', '/recovery-password'];
 const logoutRoutes = ['/login', '/register', '/recovery-password'];
@@ -47,7 +48,7 @@ function App() {
       !routesWithoutMenu.includes(currentPath) ?
         routes.map((route, idx) => {
           if (route.tab) {
-            return <Link key={`${idx}_menu`} to={route.path}>{route.title}</Link>
+            return <Link key={`${idx}_menu`} to={route.path}>{route.title} <SvgIcon component={route.icon}/></Link>
           }
           return null;
         }) : null

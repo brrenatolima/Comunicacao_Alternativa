@@ -1,47 +1,42 @@
-import {BoxComponent, TypographyComponent, TopMenuComponent} from "../../"
+import { useNavigate } from "react-router-dom";
+import {BoxComponent, TypographyComponent, TopMenuComponent, ButtonComponent, GridComponent, IconButtonComponent} from "../../"
+import { logoutApp } from "../../../utils/auth";
+import { PowerSettingsNew } from "@mui/icons-material";
 
 
-const TopComponent = ({title, subtitle, hasMenu, hasImage, hasArrowBack, hasBubble }) => {
-    return <BoxComponent sx={{
-        overflow: "hidden"
-    }}>
+const TopComponent = ({title, subtitle, hasMenu, hasImage, hasArrowBack, firebaseApp }) => {
+    const navigate = useNavigate();
 
-        <TopMenuComponent hasMenu={hasMenu} hasArrowBack={hasArrowBack} hasImage={hasImage} />
-        
-        <TypographyComponent align="center" variant="h1" component="h1" gutterBotton={true} sx={{
-        fontSize: "3rem"
-    }}>
-        {title}
-    </TypographyComponent>
-    <TypographyComponent variant="h6" component="h6" gutterBotton={true}>
-        {subtitle}
-    </TypographyComponent>
+    return <BoxComponent sx={{ overflow: "hidden" , backgroundColor: '#ff6262'}}>
+
     {
-    hasBubble ? <>
-        <div style={{
-            background: "#00373F",
-            width: "300px",
-            height: "300px",
-            position: "fixed",
-            right: "-180px",
-            top: "-180px",
-            borderRadius: "100%",
-            zIndex: "-1"
-    }}></div>
-        <div style={{
-            background: "#006876",
-            width: "160px",
-            height: "150px",
-            position: "fixed",
-            left: "-65px",
-            bottom: "-85px",
-            borderRadius: "100%",
-            zIndex: "-1"
-    }}></div>
-    </>        
-    :
-    null
-    }
+        hasMenu ?
+        <GridComponent container>
+            <GridComponent item xs={10}>
+                <TypographyComponent sx={{ p: 1 }} variant="h6" component="h6" >
+                    {title}
+                </TypographyComponent>
+            </GridComponent>
+            <GridComponent item xs={2} sx={{textAlign : 'right'}}>
+                <IconButtonComponent sx={{borderRadius: '100px !important', minWidth: '10px'}} onClick={() => logoutApp(firebaseApp, navigate)} >
+                    <PowerSettingsNew sx={{color: '#fff'}} />
+                </IconButtonComponent>
+            </GridComponent>
+        </GridComponent>
+        :
+        null
+    }    
+        
+
+        
+        <TopMenuComponent hasMenu={hasMenu} hasArrowBack={hasArrowBack} hasImage={hasImage} firebaseApp={firebaseApp} />
+        
+        
+    
+        <TypographyComponent variant="h6" component="h6" >
+            {subtitle}
+        </TypographyComponent>
+    
     
     </BoxComponent>
 }
@@ -49,8 +44,7 @@ const TopComponent = ({title, subtitle, hasMenu, hasImage, hasArrowBack, hasBubb
 TopComponent.defaultProps = {
     hasArrowBack : false,
     hasImage : false,
-    hasMenu : false,
-    hasBubble : false
+    hasMenu : false
 }
 
 export default TopComponent;

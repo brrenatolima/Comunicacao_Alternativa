@@ -5,6 +5,8 @@ export {default as BoxComponent } from './Box';
 export {default as TypographyComponent } from './Typography';
 export {default as AvatarComponent } from './Avatar';
 export {default as StackComponent } from './Stack';
+export {default as GridComponent } from './Grid';
+export {default as IconButtonComponent } from './IconButton';
 
 
 // Custom

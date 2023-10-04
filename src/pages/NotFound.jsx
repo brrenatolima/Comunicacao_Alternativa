@@ -1,10 +1,7 @@
-import { useEffect } from "react";
+import React from "react";
 
-const NotFound = ({setCurrentPath}) => {
-    useEffect(() => {
-        setCurrentPath(window.location.pathname);
-    });
-    return 'Página não encontrada!';
+function NotFound() {
+  return <div>NotFound</div>;
 }
 
 export default NotFound;
